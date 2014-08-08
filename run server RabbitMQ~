@@ -1,0 +1,6 @@
+#habilitar el plugin
+sudo rabbitmq-plugins enable rabbitmq_management
+#niciar el servicio de RabbitMQ
+sudo service rabbitmq-server start
+#Comprobar que el servicio se esta ejecutando
+rabbitmqctl status
