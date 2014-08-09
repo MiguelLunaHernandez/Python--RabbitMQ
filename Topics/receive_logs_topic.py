@@ -6,7 +6,7 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(
 	host='localhost'))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='topic_log',
+channel.exchange_declare(exchange='topic_logs',
 						 type='topic')
 
 result = channel.queue_declare(exclusive=True)
@@ -14,7 +14,7 @@ queue_name = result.method.queue
 
 binding_keys = sys.argv[1:]
 if not binding_keys:
-	print >> sys.stderr, "Usage: s% [binding_keys]..." % (sys.argv[0],)
+	print >> sys.stderr, "Usage: %s [binding_keys]..." % (sys.argv[0],)
 	sys.exit(1)
 
 for binding_key in binding_keys:
@@ -25,10 +25,10 @@ for binding_key in binding_keys:
 print " [x] Wainting for logs. To exit press CTRL+C"
 
 def callback(ch, method, properties, body):
-	print " [x] %r:%r" % (method.routing_key,nody,)
+	print " [x] %r:%r" % (method.routing_key,body,)
 
 channel.basic_consume(callback,
 					  queue=queue_name,
 					  no_ack=True)
 
-channel.star_consuming()
+channel.start_consuming()
